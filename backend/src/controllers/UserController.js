@@ -11,6 +11,16 @@ module.exports = {
     async create(req, res) {
         const { name, last_name, email, password } = req.body;
 
+        const user = await connection
+            .select()
+            .from('users')
+            .where('email', email)
+            .first();
+
+        if (user) {
+            return res.status(400).json({ error: 'User already exists' });
+        }
+
         const [id] = await connection('users').insert({
             name,
             last_name,

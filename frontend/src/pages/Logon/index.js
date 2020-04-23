@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
@@ -16,12 +16,9 @@ export default function Logon() {
         e.preventDefault();
 
         try {
-            const response = await api.post('sessions', { email, password });
+            await api.post('sessions', { email, password });
 
             history.push('/dashboard');
-
-            localStorage.setItem('userId', response.data.id);
-            localStorage.setItem('userName', response.data.name);
 
         } catch (error) {
             alert('Erro ao fazer login, tente novamente.');            
@@ -41,6 +38,7 @@ export default function Logon() {
                     onChange={e => setPassword(e.target.value)}
                 />
                 <button className="button">Entrar</button>
+                <Link className="link-signup" to="/signup">Não tem uma conta? Crie aqui!</Link>
             </form>
         </div>
     );

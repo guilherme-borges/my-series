@@ -3,6 +3,8 @@ import { useHistory, Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
+import { login } from "../../services/auth";
+
 import './styles.css';
 
 export default function Logon() {
@@ -15,13 +17,19 @@ export default function Logon() {
     async function handleLogin(e) {
         e.preventDefault();
 
-        try {
-            await api.post('sessions', { email, password });
-
-            history.push('/dashboard');
-
-        } catch (error) {
-            alert('Erro ao fazer login, tente novamente.');            
+        if (!email || !password) {
+            alert('Preencha os campos corretamente!');
+        } else {
+            try {
+                const response = await api.post('sessions', { email, password });
+                
+                login(response.data.token);
+                
+                history.push('/dashboard');
+    
+            } catch (error) {
+                alert('Erro ao fazer login, tente novamente.');   
+            }
         }
     }
 

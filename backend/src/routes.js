@@ -8,9 +8,9 @@ const SessionController = require('./controllers/SessionController');
 
 routes.post('/sessions', SessionController.create);
 
-routes.use(authMiddleware);
 routes.post('/users', UserController.create);
 
+routes.use(authMiddleware);
 routes.post('/series', SerieController.create);
 
 module.exports = routes;
